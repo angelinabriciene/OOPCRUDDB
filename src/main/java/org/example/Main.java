@@ -11,6 +11,7 @@ public class Main {
         Connection con = connect();
         System.out.println(Author.selectAll());
         System.out.println(Author.findById(10));
+        Author.create("Mama", "Mia");
     }
     public static Connection connect() {
         Connection connection = null;

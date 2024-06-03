@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Author {
     private long id;
     private String name;
-    private  String surname;
+    private String surname;
 
     public Author() {
     }
@@ -30,7 +30,7 @@ public class Author {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while ((rs.next())) {
-                Author aut = new Author(rs.getLong("id"), rs.getString("name"), rs.getNString("surname") );
+                Author aut = new Author(rs.getLong("id"), rs.getString("name"), rs.getNString("surname"));
                 authors.add(aut);
             }
             con.close();
@@ -41,6 +41,7 @@ public class Author {
         }
         return authors;
     }
+
     public static Author findById(long id) {
         String query = "SELECT * FROM `authors` WHERE id = ?";
         Author aut = null;
@@ -55,11 +56,31 @@ public class Author {
             con.close();
             pst.close();
             rs.close();
-        }catch (Exception e) {
+        } catch (Exception e) {
+            System.out.println("Failed to find author:");
             System.out.println(e);
         }
         return aut;
     }
+
+    public static void create(String name, String surname) {
+        String query = "INSERT INTO `authors`(`name`, `surname`) VALUES (?,?)";
+        try {
+            Connection con = Main.connect();
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, name);
+            pst.setString(2, surname);
+            pst.executeUpdate();
+            con.close();
+            pst.close();
+        } catch (Exception e) {
+            System.out.println("Failed to create an author:");
+            System.out.println(e);
+        }
+    }
+
+
+
 
 
 
