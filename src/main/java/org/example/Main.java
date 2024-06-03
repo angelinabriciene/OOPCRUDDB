@@ -12,6 +12,13 @@ public class Main {
         System.out.println(Author.selectAll());
         System.out.println(Author.findById(10));
         Author.create("Mama", "Mia");
+
+        Author a = Author.findById(20);
+        System.out.println(a);
+        a.setName("Marmuras");
+        a.setSurname("Kaulinis");
+        a.update();
+        System.out.println(a);
     }
     public static Connection connect() {
         Connection connection = null;

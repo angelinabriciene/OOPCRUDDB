@@ -79,6 +79,22 @@ public class Author {
         }
     }
 
+    public void update() {
+        String query = "UPDATE `authors` SET `name`= ?,`surname`= ? WHERE id = ?";
+        try {
+            Connection con = Main.connect();
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, name);
+            pst.setString(2, surname);
+            pst.setLong(3, id);
+            pst.executeUpdate();
+            con.close();
+            pst.close();
+        }catch (Exception e) {
+            System.out.println("Failed to update an author:");
+            System.out.println(e);
+        }
+    }
 
 
 
