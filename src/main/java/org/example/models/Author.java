@@ -3,6 +3,7 @@ package org.example.models;
 import org.example.Main;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -39,6 +40,25 @@ public class Author {
             System.out.println(e);
         }
         return authors;
+    }
+    public static Author findById(long id) {
+        String query = "SELECT * FROM `authors` WHERE id = ?";
+        Author aut = null;
+        try {
+            Connection con = Main.connect();
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setLong(1, id);
+            ResultSet rs = pst.executeQuery();
+            while ((rs.next())) {
+                aut = new Author(rs.getLong("id"), rs.getString("name"), rs.getString("surname"));
+            }
+            con.close();
+            pst.close();
+            rs.close();
+        }catch (Exception e) {
+            System.out.println(e);
+        }
+        return aut;
     }
 
 

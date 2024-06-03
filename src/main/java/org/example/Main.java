@@ -10,9 +10,8 @@ public class Main {
 
         Connection con = connect();
         System.out.println(Author.selectAll());
-
+        System.out.println(Author.findById(10));
     }
-
     public static Connection connect() {
         Connection connection = null;
         try {
