@@ -96,6 +96,20 @@ public class Author {
         }
     }
 
+    public static void delete(long id) {
+        String query = "DELETE FROM `authors` WHERE id = ?";
+        try {
+            Connection con = Main.connect();
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setLong(1, id);
+            pst.executeUpdate();
+            con.close();
+            pst.close();
+        }catch (Exception e) {
+            System.out.println("Failed to delete an author:");
+            System.out.println(e);
+        }
+    }
 
 
 

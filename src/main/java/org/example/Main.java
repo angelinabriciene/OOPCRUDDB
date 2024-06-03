@@ -19,6 +19,10 @@ public class Main {
         a.setSurname("Kaulinis");
         a.update();
         System.out.println(a);
+
+        System.out.println(Author.findById(22));
+        Author.delete(22);
+        System.out.println(Author.findById(22));
     }
     public static Connection connect() {
         Connection connection = null;
