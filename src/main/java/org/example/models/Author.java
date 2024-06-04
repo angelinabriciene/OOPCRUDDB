@@ -7,6 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+import static org.example.Main.sc;
 
 public class Author {
     private long id;
@@ -22,7 +25,7 @@ public class Author {
         this.name = name;
     }
 
-    public static ArrayList<Author> selectAll() {
+    public static ArrayList<Author> authors() {
         ArrayList<Author> authors = new ArrayList<>();
         String query = "SELECT * FROM authors";
         try {
@@ -42,7 +45,13 @@ public class Author {
         return authors;
     }
 
-    public static Author findById(long id) {
+    public static void printAuthor(){
+        System.out.println("Įveskite autoriaus Kurį norite rasti ID");
+        long id = sc.nextLong();
+        findById(id);
+    }
+
+    public static Author findById(Long id) {
         String query = "SELECT * FROM `authors` WHERE id = ?";
         Author aut = null;
         try {
@@ -53,6 +62,7 @@ public class Author {
             while ((rs.next())) {
                 aut = new Author(rs.getLong("id"), rs.getString("name"), rs.getString("surname"));
             }
+            System.out.println(aut);
             con.close();
             pst.close();
             rs.close();
@@ -63,7 +73,16 @@ public class Author {
         return aut;
     }
 
-    public static void create(String name, String surname) {
+    public static void createAuthor() {
+        Author author = new Author();
+        System.out.println("Įveskite autoriaus vardą");
+        String name = sc.nextLine();
+        System.out.println("Įveskite autorias pavardę");
+        String surname = sc.nextLine();
+        author.create(sc, name, surname);
+    }
+
+    public void create(Scanner sc, String name, String surname) {
         String query = "INSERT INTO `authors`(`name`, `surname`) VALUES (?,?)";
         try {
             Connection con = Main.connect();
@@ -73,13 +92,25 @@ public class Author {
             pst.executeUpdate();
             con.close();
             pst.close();
+            System.out.println("Autorius " + name + " " + surname + " sukurtas. Priskirtas ID - ???");
         } catch (Exception e) {
             System.out.println("Failed to create an author:");
             System.out.println(e);
         }
     }
 
-    public void update() {
+    public static void updateAuthor(){
+        System.out.println("Įveskite autoriaus Kurį norite redaguoti ID");
+        long id = sc.nextLong();
+        sc.nextLine();
+        System.out.println("Įveskite autoriaus vardą");
+        String name = sc.nextLine();
+        System.out.println("Įveskite autorias pavardę");
+        String surname = sc.nextLine();
+        update(sc, name, surname, id);
+    }
+
+    public static void update(Scanner sc, String name, String surname, Long id) {
         String query = "UPDATE `authors` SET `name`= ?,`surname`= ? WHERE id = ?";
         try {
             Connection con = Main.connect();
@@ -90,10 +121,18 @@ public class Author {
             pst.executeUpdate();
             con.close();
             pst.close();
-        }catch (Exception e) {
+            System.out.println("Autorius " + id + " redaguotas sėkmingai, " + name + " " + surname);
+        } catch (Exception e) {
             System.out.println("Failed to update an author:");
             System.out.println(e);
         }
+    }
+
+    public static void deleteAuthor() {
+        System.out.println("Įveskite autoriaus Kurį norite ištrinti ID");
+        long id = sc.nextLong();
+        sc.nextLine();
+        delete(id);
     }
 
     public static void delete(long id) {
@@ -105,30 +144,12 @@ public class Author {
             pst.executeUpdate();
             con.close();
             pst.close();
-        }catch (Exception e) {
+            System.out.println("Autorius " + id + " sėkmingai ištrintas");
+        } catch (Exception e) {
             System.out.println("Failed to delete an author:");
             System.out.println(e);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public long getId() {
         return id;
