@@ -1,10 +1,10 @@
 package org.example;
 
 import org.example.models.Author;
+import org.example.models.Book;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -14,9 +14,28 @@ public class Main {
     public static void main(String[] args) {
         Connection con = connect();
         sc = new Scanner(System.in);
-
         while (true) {
-            printMenu();
+            System.out.println("Pasirinkite norimą meniu:");
+            System.out.println("1. Autorių meniu");
+            System.out.println("2. Knygų meniu");
+            switch (sc.nextInt()) {
+                case 1:
+                    authorsMenu();
+                    break;
+                case 2:
+                    booksMenu();
+                    break;
+                case 3:
+                    System.out.println("Viso gero!");
+                    System.exit(1);
+            }
+        }
+    }
+
+    public static void authorsMenu() {
+        boolean aMenu = true;
+        while (aMenu) {
+            printAuthorsMenu();
             try {
                 int input = sc.nextInt();
                 sc.nextLine();
@@ -39,6 +58,50 @@ public class Main {
                         Author.deleteAuthor();
                         break;
                     case 6:
+                        aMenu = false;
+                        break;
+                    case 7:
+                        System.out.println("Viso gero!");
+                        System.exit(1);
+                    default:
+                        System.out.println("Įveskite skaičių rinkdamiesi iš meniu");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Klaida. Įveskite skaičių rinkdamiesi iš meniu");
+                sc.next();
+            }
+        }
+    }
+
+    private static void booksMenu() {
+        boolean bMenu = true;
+        while (bMenu) {
+            printBooksMenu();
+            try {
+                int input = sc.nextInt();
+                sc.nextLine();
+                switch (input) {
+                    case 1:
+                        for (Book book : Book.books()) {
+                            System.out.println(book.toString());
+                        }
+                        break;
+                    case 2:
+                        Book.printBook();
+                        break;
+                    case 3:
+//                        Author.createAuthor();
+                        break;
+                    case 4:
+//                        Author.updateAuthor();
+                        break;
+                    case 5:
+                        Book.deleteBook();
+                        break;
+                    case 6:
+                        bMenu = false;
+                        break;
+                    case 7:
                         System.out.println("Viso gero!");
                         System.exit(1);
                     default:
@@ -61,15 +124,29 @@ public class Main {
         return connection;
     }
 
-    public static void printMenu() {
+    public static void printAuthorsMenu() {
         System.out.println("---------------");
-        System.out.println("Sveiki atvykę į biblioteką. Pasirinkite norimą funkciją:");
+        System.out.println("Sveiki atvykę į autorių biblioteką. Pasirinkite norimą funkciją:");
         System.out.println("1. Išspausinti autorių sąrašą");
         System.out.println("2. Rasti autorių");
         System.out.println("3. Sukurti naują autorių");
         System.out.println("4. Redaguoti autorių");
         System.out.println("5. Ištrinti autorių");
-        System.out.println("6. Išeiti iš programos");
+        System.out.println("6. Gršžti į pagrindinį meniu");
+        System.out.println("7. Išeiti iš programos");
+        System.out.println("---------------");
+    }
+
+    public static void printBooksMenu() {
+        System.out.println("---------------");
+        System.out.println("Sveiki atvykę į knygų biblioteką. Pasirinkite norimą funkciją:");
+        System.out.println("1. Išspausinti knygų sąrašą");
+        System.out.println("2. Rasti knygą");
+        System.out.println("3. Sukurti naują knygą");
+        System.out.println("4. Redaguoti knygą");
+        System.out.println("5. Ištrinti knygą");
+        System.out.println("6. Gršžti į pagrindinį meniu");
+        System.out.println("7. Išeiti iš programos");
         System.out.println("---------------");
     }
 }

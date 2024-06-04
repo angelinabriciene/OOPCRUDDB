@@ -20,10 +20,10 @@ public class Author {
     public Author() {
     }
 
-    public Author(long id, String surname, String name) {
+    public Author(long id, String name, String surname) {
         this.id = id;
-        this.surname = surname;
         this.name = name;
+        this.surname = surname;
     }
 
     public static ArrayList<Author> authors() {
@@ -118,16 +118,16 @@ public class Author {
             System.out.println(a);
             if (a.id != 0) {
                 System.out.println("Įveskite autoriaus vardą");
-                String name = sc.nextLine();
-                System.out.println("Įveskite autorias pavardę");
-                String surname = sc.nextLine();
+                a.setName(sc.nextLine());
+                System.out.println("Įveskite autoriaus pavardę");
+                a.setSurname(sc.nextLine());
                 a.update();
-                System.out.println("Autorius sėkmingai redaguotas " + name + " " + surname);
+                System.out.println("Autorius sėkmingai redaguotas - " + a.getName() + " " + a.getSurname());
             } else {
                 System.out.println("Autoriaus pagal tokį ID nėra");
             }
         } catch (InputMismatchException e) {
-            System.out.println("Klaida. Įveskite autoriaus Kurį norite rasti ID skaičiais");
+            System.out.println("Klaida. Įveskite autoriaus kurį norite rasti ID skaičiais");
             sc.next();
         }
     }
