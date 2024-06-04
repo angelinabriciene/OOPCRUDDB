@@ -5,33 +5,48 @@ import org.example.models.Author;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
     public static Scanner sc;
+
     public static void main(String[] args) {
         Connection con = connect();
         sc = new Scanner(System.in);
 
         while (true) {
             printMenu();
-            int input = sc.nextInt();
-            sc.nextLine();
-            switch (input) {
-                case 1:
-                    System.out.println(Author.authors());
-                    break;
-                case 2:
-                    Author.printAuthor();
-                    break;
-                case 3:
-                    Author.createAuthor();
-                    break;
-                case 4:
-                    Author.updateAuthor();
-                    break;
-                case 5:
-                    Author.deleteAuthor();
+            try {
+                int input = sc.nextInt();
+                sc.nextLine();
+                switch (input) {
+                    case 1:
+                        for (Author author : Author.authors()) {
+                            System.out.println(author.toString());
+                        }
+                        break;
+                    case 2:
+                        Author.printAuthor();
+                        break;
+                    case 3:
+                        Author.createAuthor();
+                        break;
+                    case 4:
+                        Author.updateAuthor();
+                        break;
+                    case 5:
+                        Author.deleteAuthor();
+                        break;
+                    case 6:
+                        System.out.println("Viso gero!");
+                        System.exit(1);
+                    default:
+                        System.out.println("Įveskite skaičių rinkdamiesi iš meniu");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Klaida. Įveskite skaičių rinkdamiesi iš meniu");
+                sc.next();
             }
         }
     }
@@ -45,6 +60,7 @@ public class Main {
         }
         return connection;
     }
+
     public static void printMenu() {
         System.out.println("---------------");
         System.out.println("Sveiki atvykę į biblioteką. Pasirinkite norimą funkciją:");

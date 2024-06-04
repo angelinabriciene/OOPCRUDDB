@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static org.example.Main.sc;
@@ -45,15 +46,25 @@ public class Author {
         return authors;
     }
 
-    public static void printAuthor(){
+    public static void printAuthor() {
         System.out.println("Įveskite autoriaus Kurį norite rasti ID");
-        long id = sc.nextLong();
-        findById(id);
+        try {
+            long id = sc.nextLong();
+            Author a = findById(id);
+            if (a.id != 0) {
+                System.out.println(a);
+            } else {
+                System.out.println("Autoriaus su tokiu id nera");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Klaida. Įveskite autoriaus Kurį norite rasti ID skaičiais");
+            sc.next();
+        }
     }
 
     public static Author findById(Long id) {
         String query = "SELECT * FROM `authors` WHERE id = ?";
-        Author aut = null;
+        Author aut = new Author();
         try {
             Connection con = Main.connect();
             PreparedStatement pst = con.prepareStatement(query);
@@ -62,7 +73,6 @@ public class Author {
             while ((rs.next())) {
                 aut = new Author(rs.getLong("id"), rs.getString("name"), rs.getString("surname"));
             }
-            System.out.println(aut);
             con.close();
             pst.close();
             rs.close();
@@ -99,40 +109,80 @@ public class Author {
         }
     }
 
-    public static void updateAuthor(){
+    public static void updateAuthor() {
         System.out.println("Įveskite autoriaus Kurį norite redaguoti ID");
-        long id = sc.nextLong();
-        sc.nextLine();
-        System.out.println("Įveskite autoriaus vardą");
-        String name = sc.nextLine();
-        System.out.println("Įveskite autorias pavardę");
-        String surname = sc.nextLine();
-        update(sc, name, surname, id);
+        try {
+            long id = sc.nextLong();
+            sc.nextLine();
+            Author a = findById(id);
+            System.out.println(a);
+            if (a.id != 0) {
+                System.out.println("Įveskite autoriaus vardą");
+                String name = sc.nextLine();
+                System.out.println("Įveskite autorias pavardę");
+                String surname = sc.nextLine();
+                a.update();
+                System.out.println("Autorius sėkmingai redaguotas " + name + " " + surname);
+            } else {
+                System.out.println("Autoriaus pagal tokį ID nėra");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Klaida. Įveskite autoriaus Kurį norite rasti ID skaičiais");
+            sc.next();
+        }
     }
 
-    public static void update(Scanner sc, String name, String surname, Long id) {
+    public void update() {
         String query = "UPDATE `authors` SET `name`= ?,`surname`= ? WHERE id = ?";
         try {
             Connection con = Main.connect();
             PreparedStatement pst = con.prepareStatement(query);
-            pst.setString(1, name);
-            pst.setString(2, surname);
-            pst.setLong(3, id);
+            pst.setString(1, this.name);
+            pst.setString(2, this.surname);
+            pst.setLong(3, this.id);
             pst.executeUpdate();
             con.close();
             pst.close();
-            System.out.println("Autorius " + id + " redaguotas sėkmingai, " + name + " " + surname);
         } catch (Exception e) {
             System.out.println("Failed to update an author:");
             System.out.println(e);
         }
     }
 
+//    public static void update( String name, String surname, Long id) {
+//        String query = "UPDATE `authors` SET `name`= ?,`surname`= ? WHERE id = ?";
+//        try {
+//            Connection con = Main.connect();
+//            PreparedStatement pst = con.prepareStatement(query);
+//            pst.setString(1, name);
+//            pst.setString(2, surname);
+//            pst.setLong(3, id);
+//            pst.executeUpdate();
+//            con.close();
+//            pst.close();
+//            System.out.println("Autorius " + id + " redaguotas sėkmingai, " + name + " " + surname);
+//        } catch (Exception e) {
+//            System.out.println("Failed to update an author:");
+//            System.out.println(e);
+//        }
+//    }
+
     public static void deleteAuthor() {
         System.out.println("Įveskite autoriaus Kurį norite ištrinti ID");
-        long id = sc.nextLong();
-        sc.nextLine();
-        delete(id);
+        try {
+            long id = sc.nextLong();
+            sc.nextLine();
+            Author a = findById(id);
+            System.out.println(a);
+            if (a.id != 0) {
+                delete(id);
+            } else {
+                System.out.println("Autoriaus pagal tokį ID nėra");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Klaida. Įveskite autoriaus Kurį norite rasti ID skaičiais");
+            sc.next();
+        }
     }
 
     public static void delete(long id) {
@@ -177,10 +227,10 @@ public class Author {
 
     @Override
     public String toString() {
-        return "Author{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                '}';
+        return "Author: " +
+                "id- " + id +
+                ", name- " + name + '\'' +
+                ", surname- " + surname + '\'' +
+                ';';
     }
 }
