@@ -96,13 +96,18 @@ public class Author {
         String query = "INSERT INTO `authors`(`name`, `surname`) VALUES (?,?)";
         try {
             Connection con = Main.connect();
-            PreparedStatement pst = con.prepareStatement(query);
+            PreparedStatement pst = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, name);
             pst.setString(2, surname);
             pst.executeUpdate();
+            long bid = 0;
+            ResultSet generatedKeys = pst.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                bid = generatedKeys.getLong(1);
+            }
             con.close();
             pst.close();
-            System.out.println("Autorius " + name + " " + surname + " sukurtas. Priskirtas ID - ???");
+            System.out.println("Autorius " + name + " " + surname + " sukurtas. Priskirtas ID - " + bid);
         } catch (Exception e) {
             System.out.println("Failed to create an author:");
             System.out.println(e);

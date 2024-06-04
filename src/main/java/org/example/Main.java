@@ -90,10 +90,10 @@ public class Main {
                         Book.printBook();
                         break;
                     case 3:
-//                        Author.createAuthor();
+                        Book.createBook();
                         break;
                     case 4:
-//                        Author.updateAuthor();
+                        Book.updateBook();
                         break;
                     case 5:
                         Book.deleteBook();
@@ -132,7 +132,7 @@ public class Main {
         System.out.println("3. Sukurti naują autorių");
         System.out.println("4. Redaguoti autorių");
         System.out.println("5. Ištrinti autorių");
-        System.out.println("6. Gršžti į pagrindinį meniu");
+        System.out.println("6. Grįžti į pagrindinį meniu");
         System.out.println("7. Išeiti iš programos");
         System.out.println("---------------");
     }
@@ -145,7 +145,7 @@ public class Main {
         System.out.println("3. Sukurti naują knygą");
         System.out.println("4. Redaguoti knygą");
         System.out.println("5. Ištrinti knygą");
-        System.out.println("6. Gršžti į pagrindinį meniu");
+        System.out.println("6. Grįžti į pagrindinį meniu");
         System.out.println("7. Išeiti iš programos");
         System.out.println("---------------");
     }
