@@ -206,6 +206,49 @@ public class Author {
         }
     }
 
+    public static void listAuthorsAndBooks() {
+        for (Author author : Author.authors()) {
+            System.out.println();
+            System.out.println(author.toString());
+            boolean hasBook = false;
+            for (Book book : Book.books()) {
+                if (book.getAuthor_id() == author.getId()) {
+                    System.out.println("Knyga -" + book.getTitle() + ". Žanras - " + book.getGenre() + ". ID-" + book.getId());
+                    hasBook = true;
+                }
+            }
+            if (!hasBook) {
+                System.out.println("Autorius knygų neturi");
+            }
+        }
+    }
+
+    public static void printAuthorAndBook() {
+        System.out.println("Įveskite ID autorias, kurio knygas norite peržiūrėti");
+        try {
+            long id = sc.nextLong();
+            Author a = findById(id);
+            if (a.id != 0) {
+                System.out.println(a);
+                boolean hasBook = false;
+                for (Book book : Book.books()) {
+                    if (book.getAuthor_id() == a.getId()) {
+                        System.out.println("Knyga -" + book.getTitle() + ". Žanras - " + book.getGenre() + ". ID-" + book.getId());
+                        hasBook = true;
+                    }
+                }
+                if (!hasBook) {
+                    System.out.println("Autorius knygų neturi");
+                }
+            } else {
+                System.out.println("Autoriaus su tokiu id nera");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Klaida. Įveskite autoriaus Kurį norite rasti ID skaičiais");
+            sc.next();
+        }
+    }
+
     public long getId() {
         return id;
     }

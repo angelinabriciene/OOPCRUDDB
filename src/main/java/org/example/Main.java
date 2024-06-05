@@ -49,18 +49,24 @@ public class Main {
                         Author.printAuthor();
                         break;
                     case 3:
-                        Author.createAuthor();
+                        Author.listAuthorsAndBooks();
                         break;
                     case 4:
-                        Author.updateAuthor();
+                        Author.printAuthorAndBook();
                         break;
                     case 5:
-                        Author.deleteAuthor();
+                        Author.createAuthor();
                         break;
                     case 6:
-                        aMenu = false;
+                        Author.updateAuthor();
                         break;
                     case 7:
+                        Author.deleteAuthor();
+                        break;
+                    case 8:
+                        aMenu = false;
+                        break;
+                    case 9:
                         System.out.println("Viso gero!");
                         System.exit(1);
                     default:
@@ -82,12 +88,10 @@ public class Main {
                 sc.nextLine();
                 switch (input) {
                     case 1:
-                        for (Book book : Book.books()) {
-                            System.out.println(book.toString());
-                        }
+                        Book.printBooks();
                         break;
                     case 2:
-                        Book.printBook();
+                        Book.printBookAndAuthor();
                         break;
                     case 3:
                         Book.createBook();
@@ -129,11 +133,13 @@ public class Main {
         System.out.println("Sveiki atvykę į autorių biblioteką. Pasirinkite norimą funkciją:");
         System.out.println("1. Išspausinti autorių sąrašą");
         System.out.println("2. Rasti autorių");
-        System.out.println("3. Sukurti naują autorių");
-        System.out.println("4. Redaguoti autorių");
-        System.out.println("5. Ištrinti autorių");
-        System.out.println("6. Grįžti į pagrindinį meniu");
-        System.out.println("7. Išeiti iš programos");
+        System.out.println("3. Išspausinti autorių sąrašą ir jiems priskirtas knygas");
+        System.out.println("4. Rasti autorių ir jo parašytas knygas");
+        System.out.println("5. Sukurti naują autorių");
+        System.out.println("6. Redaguoti autorių");
+        System.out.println("7. Ištrinti autorių");
+        System.out.println("8. Grįžti į pagrindinį meniu");
+        System.out.println("9. Išeiti iš programos");
         System.out.println("---------------");
     }
 

@@ -28,6 +28,16 @@ public class Book {
         this.author_id = author_id;
     }
 
+    public static void printBooks() {
+        for (Book book : Book.books()) {
+            System.out.println(book.toString());
+            Author author = Author.findById(book.getAuthor_id());
+            System.out.print(" Autorius - " + author.getName() + " " + author.getSurname() + ".");
+            System.out.println();
+            System.out.println();
+        }
+    }
+
     public static ArrayList<Book> books() {
         ArrayList<Book> books = new ArrayList<>();
         String query = "SELECT * FROM books";
@@ -83,6 +93,25 @@ public class Book {
             System.out.println(e);
         }
         return b;
+    }
+
+    public static void printBookAndAuthor() {
+        System.out.println("Įveskite knygos Kurią norite rasti ID");
+        try {
+            long id = sc.nextLong();
+            Book b = findById(id);
+            if (b.id != 0) {
+                System.out.println(b);
+                Author author = Author.findById(b.getAuthor_id());
+                System.out.println(" Autorius - " + author.getName() + " " + author.getSurname() + ".");
+                System.out.println();
+            } else {
+                System.out.println("Autoriaus su tokiu id nera");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Klaida. Įveskite knygos kurią norite rasti ID skaičiais");
+            sc.next();
+        }
     }
 
     public static void createBook() {
