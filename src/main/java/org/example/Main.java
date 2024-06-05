@@ -15,9 +15,7 @@ public class Main {
         Connection con = connect();
         sc = new Scanner(System.in);
         while (true) {
-            System.out.println("Pasirinkite norimą meniu:");
-            System.out.println("1. Autorių meniu");
-            System.out.println("2. Knygų meniu");
+            printMainMenu();
             switch (sc.nextInt()) {
                 case 1:
                     authorsMenu();
@@ -26,6 +24,9 @@ public class Main {
                     booksMenu();
                     break;
                 case 3:
+                    seachMenu();
+                    break;
+                case 4:
                     System.out.println("Viso gero!");
                     System.exit(1);
             }
@@ -118,6 +119,28 @@ public class Main {
         }
     }
 
+    public static void seachMenu() {
+        boolean sMenu = true;
+        while (sMenu) {
+            printSelectMenu();
+            try {
+                int input = sc.nextInt();
+                sc.nextLine();
+                switch (input) {
+                    case 1:
+                        Author.printAuthorsByName();
+                        break;
+                    case 2:
+//                        ieškoti knygos pagal pavadinima ir zanra
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Klaida. Įveskite skaičių rinkdamiesi iš meniu");
+                sc.next();
+            }
+        }
+    }
+
     public static Connection connect() {
         Connection connection = null;
         try {
@@ -126,6 +149,21 @@ public class Main {
             System.out.println("Failed to connect to database");
         }
         return connection;
+    }
+
+    public static void printMainMenu() {
+        System.out.println("Pasirinkite norimą meniu:");
+        System.out.println("1. Autorių meniu");
+        System.out.println("2. Knygų meniu");
+        System.out.println("3. Paieška pagal raktažodžius");
+    }
+
+    public static void printSelectMenu() {
+        System.out.println("---------------");
+        System.out.println("Sveiki atvykę į biblioteką");
+        System.out.println("1. Ieškoti autoriaus pagal vardą ar pavardę");
+        System.out.println("2. ieškoti knygos pagal pavadinimą ar žanrą");
+        System.out.println("---------------");
     }
 
     public static void printAuthorsMenu() {
