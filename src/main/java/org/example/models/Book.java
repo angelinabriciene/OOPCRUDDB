@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import static org.example.Main.sc;
@@ -95,16 +96,47 @@ public class Book {
         return b;
     }
 
+    public static ArrayList<Book> findByAuthorId(Long author_id) {
+        ArrayList<Book> books = new ArrayList<>();
+        String query = "SELECT * FROM `books` WHERE `author_id` = ?";
+        try {
+            Connection con = Main.connect();
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setLong(1, author_id);
+            ResultSet rs = stmt.executeQuery();
+            while ((rs.next())) {
+                Book boo = new Book(rs.getLong("id"), rs.getString("title"), rs.getNString("genre"), rs.getLong("author_id"));
+                books.add(boo);
+            }
+            con.close();
+            stmt.close();
+            rs.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return books;
+    }
+
     public static void printBookAndAuthor() {
         System.out.println("Įveskite knygos Kurią norite rasti ID");
         try {
             long id = sc.nextLong();
+            sc.nextLine();
             Book b = findById(id);
             if (b.id != 0) {
                 System.out.println(b);
                 Author author = Author.findById(b.getAuthor_id());
                 System.out.println(" Autorius - " + author.getName() + " " + author.getSurname() + ".");
                 System.out.println();
+                System.out.println("Ar norite pamatyti visas šio autoriaus knygas? Įveskite TAIP arba NE");
+                String input = sc.nextLine();
+                if (input.equalsIgnoreCase("taip")) {
+                    System.out.println("Autoriaus " + author.getName() + " " + author.getSurname() + " knygos:");
+                    List<Book> books = Book.findByAuthorId(author.getId());
+                    for (Book book : books) {
+                        System.out.println(book);
+                    }
+                }
             } else {
                 System.out.println("Autoriaus su tokiu id nera");
             }
